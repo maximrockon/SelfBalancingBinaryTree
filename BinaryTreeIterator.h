@@ -6,7 +6,7 @@
 template <typename T>
 class BinaryTreeIterator: public
 	std::iterator<std::bidirectional_iterator_tag, T> {
-	template <typename T>
+	template <typename T1>
 	friend class SelfBalancingBinaryTree;
 private:
 	Node<T>* current_;
@@ -20,10 +20,13 @@ public:
 	T& operator*() const;
 	T* operator->() const;
 
+	// pre-increment
 	BinaryTreeIterator<T>& operator++();
+	// post-increment
 	BinaryTreeIterator<T> operator++(int);
-
+	// pre-decrement
 	BinaryTreeIterator<T>& operator--();
+	// post-decrement
 	BinaryTreeIterator<T> operator--(int);
 };
 
