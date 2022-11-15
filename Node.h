@@ -3,9 +3,9 @@
 
 template <typename T>
 class Node {
-	template <typename T>
+	template <typename T1>
 	friend class SelfBalancingBinaryTree;
-	template <typename T>
+	template <typename T2>
 	friend class BinaryTreeIterator;
 private:
 	T key_;
