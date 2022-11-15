@@ -8,74 +8,55 @@ template <typename T>
 class SelfBalancingBinaryTree {
 private:
 	Node<T>* root_;
-
-	// функция изменения поля countChildren_ у всех родительских узлов
+	// change the number of children
+	// of all parent nodes of this node
 	void changeCountChildren(Node<T>* node, bool flag);
 
-	// вращения, балансирующие высоту дерева:
-	// малое левое вращение
 	void rotateLeft(Node<T>* node);
-	// большое левое вращение
+
 	void bigRotateLeft(Node<T>* node);
-	// малое правое вращение
+
 	void rotateRight(Node<T>* node);
-	// большое правое вращение
+
 	void bigRotateRight(Node<T>* node);
 
-	// рекурсивная функция определения высоты дерева
 	int64_t getHeightSubTree(Node<T>* node) const;
 
-	// функция поиска адреса узла по ключу в дереве
 	Node<T>* iterativeSearchNode(const T& key) const;
 
-	// функция проверки сбалансированности дерева
-	// от узла node до корневого узла
 	void checkBalance(Node<T>* node);
 
-	// вспомогательная функция
 	void inorderWalk(Node<T>* node) const;
 
-	// рекурсивная функция для освобождения памяти
 	void deleteSubtree(Node<T>* node);
 public:
 	using Iterator = BinaryTreeIterator<T>;
 	
-	// конструкторы
 	SelfBalancingBinaryTree();
 	SelfBalancingBinaryTree(const SelfBalancingBinaryTree<T>& t) = delete;
 	SelfBalancingBinaryTree(SelfBalancingBinaryTree<T>&& t);
 
-	// операторы присваивания
 	SelfBalancingBinaryTree<T>& operator=
 		(const SelfBalancingBinaryTree<T>& t) = delete;
 	SelfBalancingBinaryTree<T>& operator=
 		(SelfBalancingBinaryTree<T>&& t);
 
-	// деструктор
 	virtual ~SelfBalancingBinaryTree();
 
-	// функция получения итератора для младшего элемента
-	BinaryTreeIterator<T> begin() const;
-	// функция получения итератора для элемента,
-	// стоящего сразу за последним элементом дерева
-	BinaryTreeIterator<T> end() const;
+	Iterator begin() const;
 
-	// функция поиска по ключу в дереве
+	Iterator end() const;
+
 	bool iterativeSearch(const T& key) const;
-
-	// функция вставки
+	// request (k v)
 	bool insert(const T& key);
 
-	// функция удаления
 	bool deleteKey(const T& key);
-
-	// первый тип запросов (m i)
+	// request (m i)
 	T getOrderStatistic(const uint32_t k) const;
-
-	// второй тип запросов (n j)
+	// request (n j)
 	uint32_t getNumberOfSmallerElements(const T& key) const;
 
-	// обход дерева
 	void inorderWalk() const;
 };
 
@@ -136,7 +117,6 @@ void SelfBalancingBinaryTree<T>::
 	}
 }
 
-// малое левое вращение
 template <typename T>
 void SelfBalancingBinaryTree<T>::
 	rotateLeft(Node<T>* node) {
@@ -165,7 +145,6 @@ void SelfBalancingBinaryTree<T>::
 	node->p_ = newRoot;
 }
 
-// большое левое вращение
 template <typename T>
 void SelfBalancingBinaryTree<T>::
 	bigRotateLeft(Node<T>* node) {
@@ -210,7 +189,6 @@ void SelfBalancingBinaryTree<T>::
 	node->p_ = newRoot;
 }
 
-// малое правое вращение
 template <typename T>
 void SelfBalancingBinaryTree<T>::
 	rotateRight(Node<T>* node) {
@@ -239,7 +217,6 @@ void SelfBalancingBinaryTree<T>::
 	node->p_ = newRoot;
 }
 
-// мольшое правое вращение
 template <typename T>
 void SelfBalancingBinaryTree<T>::
 	bigRotateRight(Node<T>* node) {
@@ -284,7 +261,6 @@ void SelfBalancingBinaryTree<T>::
 	node->p_ = newRoot;
 }
 
-// рекурсивная функция определения высоты дерева
 template <typename T>
 int64_t SelfBalancingBinaryTree<T>::
 	getHeightSubTree(Node<T>* node) const {
@@ -297,8 +273,6 @@ int64_t SelfBalancingBinaryTree<T>::
 	return -1;
 }
 
-// функция проверки сбалансированности дерева
-// от узла node до корневого узла
 template <typename T>
 void SelfBalancingBinaryTree<T>::checkBalance(Node<T>* node) {
 	while (node != nullptr) {
@@ -329,7 +303,6 @@ void SelfBalancingBinaryTree<T>::checkBalance(Node<T>* node) {
 	}
 }
 
-// рекурсивная функция для освобождения памяти
 template <class T>
 void SelfBalancingBinaryTree<T>::deleteSubtree(Node<T>* node)
 {
@@ -341,9 +314,7 @@ void SelfBalancingBinaryTree<T>::deleteSubtree(Node<T>* node)
 	}
 }
 
-// вставка нового элемента в дерево:
-// возвращает true, если элемент был вставлен; false, если
-// элемент с таким ключем уже есть в дереве
+
 template <typename T>
 bool SelfBalancingBinaryTree<T>::insert(const T& key) {
 	if (root_ == nullptr) {
@@ -377,18 +348,14 @@ bool SelfBalancingBinaryTree<T>::insert(const T& key) {
 	}
 }
 
-// удаление элемента из дерева, не нарушающее порядка элементов:
-// true, если элемент удален; false, если элемента не было
 template <typename T>
 bool SelfBalancingBinaryTree<T>::deleteKey(const T& key) {
 	Node<T>* deleteNode = iterativeSearchNode(key);
 	if (deleteNode == nullptr) {
 		return false;
 	} else {
-		// если узел - лист
 		if (deleteNode->left_ == nullptr &&
 			deleteNode->right_ == nullptr) {
-			// если корень - лист
 			if (deleteNode->p_ == nullptr) {
 				root_ = nullptr;
 				delete deleteNode;
@@ -403,7 +370,6 @@ bool SelfBalancingBinaryTree<T>::deleteKey(const T& key) {
 				delete deleteNode;
 				checkBalance(node);
 			}
-		// если нет левого ребенка, а правый ребенок - лист
 		} else if (deleteNode->left_ == nullptr
 			&& deleteNode->right_->left_ == nullptr
 			&& deleteNode->right_->right_ == nullptr) {
@@ -413,7 +379,6 @@ bool SelfBalancingBinaryTree<T>::deleteKey(const T& key) {
 			deleteNode->right_ = nullptr;
 			delete deleteNodeRight;
 			checkBalance(deleteNode);
-		// если нет правого ребенка, а левый ребенок - лист
 		} else if (deleteNode->right_ == nullptr 
 			&& deleteNode->left_->left_ == nullptr
 			&& deleteNode->left_->right_ == nullptr) {
