@@ -1,6 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
 
+// binary tree node
 template <typename T>
 class Node {
 	template <typename T1>
@@ -9,6 +10,7 @@ class Node {
 	friend class BinaryTreeIterator;
 private:
 	T key_;
+	// number of children of this node
 	uint32_t countChildren_;
 	Node<T>* p_;
 	Node<T>* left_;
