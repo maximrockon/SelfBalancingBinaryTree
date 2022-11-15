@@ -81,3 +81,19 @@ TEST(tree, begin_end) {
     ASSERT_THROW(*it3, NullPointerDereference);
 }
 
+TEST(tree, deleteKey) {
+    SelfBalancingBinaryTree<int> t1;
+    const uint32_t size = 20;
+    for (int i = 0; i < size; ++i) {
+        t1.insert(i);
+    }
+    for (int i = size / 2; i >= 0 ; --i) {
+        t1.deleteKey(i);
+        auto it1 = t1.begin();
+        int m = 1;
+        while (it1 != t1.end())  {
+            ASSERT_EQ(*(it1++), t1.getOrderStatistic(m++));
+        }
+        ASSERT_EQ(t1.deleteKey(i), false);
+    }
+}
